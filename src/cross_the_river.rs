@@ -4,7 +4,7 @@ enum Person {
     Female(&'static str),
 }
 
-use std::{iter::Map, vec::IntoIter};
+use std::vec::IntoIter;
 
 use crate::dfs::Connect;
 use Person::*;
@@ -111,17 +111,17 @@ pub fn cross_the_river() {
     let res = init.pick_passenger();
 }
 
-// impl<'a> Connect<'a, State<'a>, IntoIter<State<'a>>> for State<'a> {
-//     fn get_adj(&'a self) -> IntoIter<State<'a>> {
-//         let pairs = self.pick_passenger();
-//         let s = pairs
-//             .into_iter()
-//             .map(|pair| self.next_state(pair))
-//             .collect::<Vec<_>>()
-//             .into_iter();
-//         s
-//     }
-// }
+impl<'a> Connect<'a, State<'a>, IntoIter<State<'a>>> for State<'a> {
+    fn get_adj(&self) -> IntoIter<State<'a>> {
+        let pairs = self.pick_passenger();
+        let s = pairs
+            .into_iter()
+            .map(|pair| self.next_state(pair))
+            .collect::<Vec<_>>()
+            .into_iter();
+        s
+    }
+}
 
 #[test]
 fn test() {
